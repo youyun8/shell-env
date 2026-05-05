@@ -51,9 +51,10 @@ Prompt behavior:
   puts the input on a new line, with the current time on the right.
 
 Color behavior:
-  Adds a managed block to ~/.config/fish/config.fish that overrides
-  fish's blue/cyan-leaning syntax-highlighting and pager defaults so
-  text stays readable on dark backgrounds (e.g. WSL Ubuntu's theme).
+  Adds a managed block to ~/.config/fish/config.fish that aligns fish
+  command-line syntax colors with Bash's terminal-default input foreground
+  while keeping prompt, status, autosuggestion, search, and pager colors
+  readable on dark backgrounds.
 EOF
 }
 
@@ -270,32 +271,23 @@ write_fish_colors_block() {
     {
         echo "${FISH_COLORS_BLOCK_START}"
         cat <<'EOF'
-# Override fish's default syntax-highlighting, prompt, git, and pager
-# colors so text stays legible on WSL Ubuntu's dark purple theme. Each
-# semantic role gets its own hue (or a unique attribute combination) so
-# nothing on the command line is ambiguous:
-#   green   = commands / user identity
-#   magenta = control-flow keywords / hostname / escapes
-#   yellow  = quoted strings / descriptions / options
-#   blue    = redirections (matches the light blue used for `ls` dirs)
-#   cyan    = cwd path / operators
-#   white   = parameters and pager text
-#   black   = autosuggestion / comments (intentionally muted)
-#   orange  = errors / non-zero status
+# Keep editable command text at the terminal default, matching Bash after
+# PS1 resets colors. Prompt, status, autosuggestion, search, and pager
+# colors remain explicit for readability on dark backgrounds.
 set -g fish_color_normal normal
-set -g fish_color_command brgreen
-set -g fish_color_keyword brmagenta
-set -g fish_color_quote bryellow
-set -g fish_color_param brwhite
-set -g fish_color_redirection brblue
-set -g fish_color_operator brcyan
-set -g fish_color_end brwhite
-set -g fish_color_option bryellow
-set -g fish_color_escape brmagenta
+set -g fish_color_command normal
+set -g fish_color_keyword normal
+set -g fish_color_quote normal
+set -g fish_color_param normal
+set -g fish_color_redirection normal
+set -g fish_color_operator normal
+set -g fish_color_end normal
+set -g fish_color_option normal
+set -g fish_color_escape normal
+set -g fish_color_error normal
+set -g fish_color_valid_path normal
+set -g fish_color_comment normal
 set -g fish_color_autosuggestion brblack
-set -g fish_color_comment brblack --italics
-set -g fish_color_error ff8700
-set -g fish_color_valid_path --underline
 set -g fish_color_selection brwhite --background=brblack
 set -g fish_color_search_match --background=555555
 set -g fish_color_user brgreen
@@ -306,7 +298,7 @@ set -g fish_color_cwd_root ff8700
 set -g fish_color_status ff8700
 set -g fish_color_cancel ff8700
 set -g fish_color_match bryellow --background=brblack
-set -g fish_color_history_current bryellow
+set -g fish_color_history_current normal
 set -g fish_pager_color_completion brwhite
 set -g fish_pager_color_description bryellow
 set -g fish_pager_color_prefix brgreen

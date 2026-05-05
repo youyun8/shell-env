@@ -306,7 +306,46 @@ write_nushell_prompt_block() {
     {
         echo "${NUSHELL_PROMPT_BLOCK_START}"
         cat <<'EOF'
-$env.config = ($env.config? | default {} | merge { show_banner: true })
+$env.config = ($env.config? | default {} | merge {
+    show_banner: true
+    color_config: (($env.config.color_config? | default {}) | merge {
+        shape_binary: default
+        shape_block: default
+        shape_bool: default
+        shape_closure: default
+        shape_custom: default
+        shape_datetime: default
+        shape_directory: default
+        shape_external: default
+        shape_externalarg: default
+        shape_external_resolved: default
+        shape_filepath: default
+        shape_flag: default
+        shape_float: default
+        shape_glob_interpolation: default
+        shape_globpattern: default
+        shape_int: default
+        shape_internalcall: default
+        shape_keyword: default
+        shape_list: default
+        shape_literal: default
+        shape_match_pattern: default
+        shape_matching_brackets: default
+        shape_nothing: default
+        shape_operator: default
+        shape_pipe: default
+        shape_range: default
+        shape_record: default
+        shape_redirection: default
+        shape_signature: default
+        shape_string: default
+        shape_string_interpolation: default
+        shape_table: default
+        shape_variable: default
+        shape_vardecl: default
+        shape_raw_string: default
+    })
+})
 
 # Show user@host, the full path, git branch/status, and put input on a new line.
 # `complete` captures stderr so the noisy "fatal: not a git repository" message

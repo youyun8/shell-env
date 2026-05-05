@@ -40,7 +40,7 @@ For Vim settings, reopen Vim or run `:source ~/.vimrc` inside Vim.
 
 ## Bash
 
-Configures Bash with a managed environment block, a prompt that shows the full path, Git status, and right-side time, plus Vim settings.
+Configures Bash with a managed environment block, a prompt that shows the full path, Git status, right-side time, and terminal-default command input, plus Vim settings.
 
 ```bash
 bash bash/setup.sh                     # install bash env + prompt + vim (default)
@@ -59,7 +59,7 @@ Bash config is written to `~/.bashrc`. Prompt setup copies
 
 ## Fish
 
-Installs [fish](https://fishshell.com/) and can write managed environment, prompt, color, and Vim configuration blocks. The prompt shows the full path, Git status, and right-side time.
+Installs [fish](https://fishshell.com/) and can write managed environment, prompt, color, and Vim configuration blocks. The prompt shows the full path, Git status, and right-side time; editable command syntax uses the terminal default to match Bash.
 
 ```bash
 bash fish/setup.sh                     # install fish + env + prompt + colors + vim (default)
@@ -80,7 +80,7 @@ Fish config is written to `~/.config/fish/config.fish`.
 
 ## Nushell
 
-Installs [Nushell](https://www.nushell.sh/) and can write managed environment, prompt, and Vim configuration. The prompt shows the full path, Git status, and right-side time.
+Installs [Nushell](https://www.nushell.sh/) and can write managed environment, prompt, and Vim configuration. The prompt shows the full path, Git status, and right-side time; editable command syntax uses the terminal default to match Bash.
 On apt-based systems where `nushell` is not available from the configured repositories, the installer downloads the latest official Linux release from GitHub and installs `nu` and its bundled plugins to `/usr/local/bin`.
 
 ```bash
