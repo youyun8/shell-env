@@ -391,7 +391,7 @@ def shell_env_git_prompt [] {
         $"($ref) ($flags)"
     }
 
-    $"(ansi { fg: '#AFD7FF' }) \(($decorated_ref)\)(ansi reset)"
+    $"(ansi { fg: '#FFFF87' }) \(($decorated_ref)\)(ansi reset)"
 }
 
 # Light color palette tuned for WSL Ubuntu's dark purple background without

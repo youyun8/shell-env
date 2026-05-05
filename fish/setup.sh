@@ -215,7 +215,7 @@ function fish_prompt --description 'shell-env: default prompt + full path + newl
 
     set -l color_userhost afffaf
     set -l color_cwd ffaf87
-    set -l color_git afd7ff
+    set -l color_git ffff87
     set -l suffix '>'
     switch "$prompt_user"
         case root toor
@@ -306,7 +306,7 @@ set -g fish_pager_color_progress brwhite --background=brblack
 set -g fish_pager_color_secondary_background --background=brblack
 set -g fish_pager_color_selected_background --background=brblack
 
-# Align git status segment with bash __git_ps1 (single yellow hue, color 228 / #FFFF87).
+# Keep the git status segment on Fish's yellow hue, color 228 / #FFFF87.
 set -g __fish_git_prompt_color ffff87
 set -g __fish_git_prompt_color_branch ffff87
 set -g __fish_git_prompt_color_branch_detached ffff87

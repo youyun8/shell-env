@@ -139,7 +139,7 @@ write_prompt_block() {
         # purple background without relying on bold text.
         local userhost='\\[\\e[38;5;157m\\]\\u@${host_token}\\[\\e[0m\\]'
         local cwd='\\[\\e[38;5;216m\\]\\w\\[\\e[0m\\]'
-        local git='\\[\\e[38;5;153m\\]'
+        local git='\\[\\e[38;5;228m\\]'
         local time_color='\\[\\e[38;5;254m\\]'
         local reset='\\[\\e[0m\\]'
         local right_time
