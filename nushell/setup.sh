@@ -306,7 +306,7 @@ write_nushell_prompt_block() {
     {
         echo "${NUSHELL_PROMPT_BLOCK_START}"
         cat <<'EOF'
-$env.config = ($env.config? | default {} | merge { show_banner: false })
+$env.config = ($env.config? | default {} | merge { show_banner: true })
 
 # Show user@host, the full path, git branch/status, and put input on a new line.
 # `complete` captures stderr so the noisy "fatal: not a git repository" message
