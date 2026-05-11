@@ -215,7 +215,7 @@ function fish_prompt --description 'shell-env: default prompt + full path + newl
 
     set -l color_userhost afffaf
     set -l color_cwd 87d7ff
-    set -l color_git ffff87
+    set -l color_git d7afff
     set -l suffix '>'
     switch "$prompt_user"
         case root toor
@@ -306,18 +306,18 @@ set -g fish_pager_color_progress brwhite --background=brblack
 set -g fish_pager_color_secondary_background --background=brblack
 set -g fish_pager_color_selected_background --background=brblack
 
-# Keep the git status segment on Fish's yellow hue, color 228 / #FFFF87.
-set -g __fish_git_prompt_color ffff87
-set -g __fish_git_prompt_color_branch ffff87
-set -g __fish_git_prompt_color_branch_detached ffff87
-set -g __fish_git_prompt_color_dirtystate ffff87
-set -g __fish_git_prompt_color_stagedstate ffff87
-set -g __fish_git_prompt_color_invalidstate ffff87
-set -g __fish_git_prompt_color_untrackedfiles ffff87
-set -g __fish_git_prompt_color_cleanstate ffff87
-set -g __fish_git_prompt_color_stashstate ffff87
-set -g __fish_git_prompt_color_upstream ffff87
-set -g __fish_git_prompt_color_flags ffff87
+# Keep the git status segment on a soft lavender, color 183 / #D7AFFF.
+set -g __fish_git_prompt_color d7afff
+set -g __fish_git_prompt_color_branch d7afff
+set -g __fish_git_prompt_color_branch_detached d7afff
+set -g __fish_git_prompt_color_dirtystate d7afff
+set -g __fish_git_prompt_color_stagedstate d7afff
+set -g __fish_git_prompt_color_invalidstate d7afff
+set -g __fish_git_prompt_color_untrackedfiles d7afff
+set -g __fish_git_prompt_color_cleanstate d7afff
+set -g __fish_git_prompt_color_stashstate d7afff
+set -g __fish_git_prompt_color_upstream d7afff
+set -g __fish_git_prompt_color_flags d7afff
 EOF
         echo "${FISH_COLORS_BLOCK_END}"
     } >> "${config_file}"
