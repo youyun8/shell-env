@@ -409,7 +409,7 @@ $env.PROMPT_COMMAND = {||
     let user = (shell_env_current_user)
     let host = (do --ignore-errors { hostname } | str trim | split row '.' | first)
     let userhost_color = (ansi { fg: '#AFFFAF' })
-    let cwd_color = (ansi { fg: '#FFAF87' })
+    let cwd_color = (ansi { fg: '#87D7FF' })
     let reset = (ansi reset)
     $"($userhost_color)($user)@($host)($reset) ($cwd_color)($env.PWD)($reset)(shell_env_git_prompt)\n"
 }

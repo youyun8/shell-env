@@ -214,7 +214,7 @@ function fish_prompt --description 'shell-env: default prompt + full path + newl
     end
 
     set -l color_userhost afffaf
-    set -l color_cwd ffaf87
+    set -l color_cwd 87d7ff
     set -l color_git ffff87
     set -l suffix '>'
     switch "$prompt_user"
