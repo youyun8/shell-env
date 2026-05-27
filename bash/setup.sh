@@ -135,11 +135,9 @@ write_prompt_block() {
                 ;;
         esac
 
-        # Distinct light hues chosen for legibility on WSL Ubuntu's dark
-        # purple background without relying on bold text.
-        local userhost='\\[\\e[38;5;157m\\]\\u@${host_token}\\[\\e[0m\\]'
-        local cwd='\\[\\e[38;5;117m\\]\\w\\[\\e[0m\\]'
-        local git='\\[\\e[38;5;183m\\]'
+        local userhost='\\[\\e[01;32m\\]\\u@${host_token}\\[\\e[0m\\]'
+        local cwd='\\[\\e[01;34m\\]\\w\\[\\e[0m\\]'
+        local git='\\[\\e[38;5;215m\\]'
         local time_color='\\[\\e[38;5;254m\\]'
         local reset='\\[\\e[0m\\]'
         local right_time

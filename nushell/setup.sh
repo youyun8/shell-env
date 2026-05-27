@@ -391,12 +391,9 @@ def shell_env_git_prompt [] {
         $"($ref) ($flags)"
     }
 
-    $"(ansi { fg: '#D7AFFF' }) \(($decorated_ref)\)(ansi reset)"
+    $"(ansi { fg: '#FFAF5F' }) \(($decorated_ref)\)(ansi reset)"
 }
 
-# Light color palette tuned for WSL Ubuntu's dark purple background without
-# relying on bold text. Each prompt segment uses a distinct hue so
-# user/host/cwd/git/time are easy to tell apart.
 def shell_env_current_user [] {
     let user_env = ($env.USER? | default "")
     if not ($user_env | is-empty) {
@@ -408,8 +405,8 @@ def shell_env_current_user [] {
 $env.PROMPT_COMMAND = {||
     let user = (shell_env_current_user)
     let host = (do --ignore-errors { hostname } | str trim | split row '.' | first)
-    let userhost_color = (ansi { fg: '#AFFFAF' })
-    let cwd_color = (ansi { fg: '#87D7FF' })
+    let userhost_color = (ansi green_bold)
+    let cwd_color = (ansi blue_bold)
     let reset = (ansi reset)
     $"($userhost_color)($user)@($host)($reset) ($cwd_color)($env.PWD)($reset)(shell_env_git_prompt)\n"
 }
