@@ -60,6 +60,7 @@ Bash config is written to `~/.bashrc`. Prompt setup copies
 ## Fish
 
 Installs [fish](https://fishshell.com/) and can write managed environment, prompt, color, and Vim configuration blocks. The prompt shows the full path, Git status, and right-side time; editable command syntax uses the terminal default to match Bash.
+On apt-based systems where `fish` cannot be installed from the configured repositories, the installer downloads the latest official Linux release from GitHub and installs `fish` to `/usr/local/bin`.
 
 ```bash
 bash fish/setup.sh                     # install fish + env + prompt + colors + vim (default)

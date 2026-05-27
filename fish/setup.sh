@@ -16,6 +16,7 @@ FISH_COLORS_BLOCK_START="# >>> shell-env fish-colors >>>"
 FISH_COLORS_BLOCK_END="# <<< shell-env fish-colors <<<"
 LEGACY_FISH_COLORS_BLOCK_START="# >>> bash-env-setup fish-colors >>>"
 LEGACY_FISH_COLORS_BLOCK_END="# <<< bash-env-setup fish-colors <<<"
+FISH_LATEST_RELEASE_API="https://api.github.com/repos/fish-shell/fish-shell/releases/latest"
 
 print_help() {
     cat <<EOF
@@ -39,6 +40,8 @@ Description:
 
 Supported package managers:
   apt-get, dnf, yum, apk, pacman, zypper, brew
+  On apt systems where fish cannot be installed from configured
+  repositories, installs the latest GitHub Linux release to /usr/local/bin.
 
 Env behavior:
   Adds a managed block to ~/.config/fish/config.fish that prepends
@@ -76,8 +79,12 @@ install_fish() {
 
     if command -v apt-get >/dev/null 2>&1; then
         echo "Installing fish via apt-get..."
-        $sudo apt-get update
-        $sudo apt-get install -y fish
+        if $sudo apt-get update && $sudo apt-get install -y fish; then
+            :
+        else
+            echo "Unable to install fish via apt-get; installing latest release from GitHub..."
+            install_fish_from_github_release "${sudo}" || return 1
+        fi
     elif command -v dnf >/dev/null 2>&1; then
         echo "Installing fish via dnf..."
         $sudo dnf install -y fish
@@ -107,6 +114,118 @@ install_fish() {
     fi
 
     echo "fish installed: $(command -v fish) ($(fish --version 2>/dev/null))"
+}
+
+download_to_stdout() {
+    local url="$1"
+
+    if command -v curl >/dev/null 2>&1; then
+        curl -fsSL "${url}"
+    elif command -v wget >/dev/null 2>&1; then
+        wget -qO- "${url}"
+    else
+        echo "Error: curl or wget is required to download fish from GitHub." >&2
+        return 1
+    fi
+}
+
+download_to_file() {
+    local url="$1"
+    local output_file="$2"
+
+    if command -v curl >/dev/null 2>&1; then
+        curl -fL "${url}" -o "${output_file}"
+    elif command -v wget >/dev/null 2>&1; then
+        wget -O "${output_file}" "${url}"
+    else
+        echo "Error: curl or wget is required to download fish from GitHub." >&2
+        return 1
+    fi
+}
+
+ensure_fish_github_dependencies() {
+    local sudo="$1"
+
+    if (command -v curl >/dev/null 2>&1 || command -v wget >/dev/null 2>&1) \
+        && command -v xz >/dev/null 2>&1; then
+        return 0
+    fi
+
+    if command -v apt-get >/dev/null 2>&1; then
+        echo "Installing GitHub download dependencies..."
+        $sudo apt-get install -y ca-certificates curl xz-utils
+        return 0
+    fi
+
+    echo "Error: curl or wget and xz are required to download fish from GitHub." >&2
+    return 1
+}
+
+fish_linux_arch() {
+    case "$(uname -m)" in
+        x86_64|amd64)
+            echo "x86_64"
+            ;;
+        aarch64|arm64)
+            echo "aarch64"
+            ;;
+        *)
+            echo "Error: unsupported Linux architecture for fish GitHub install: $(uname -m)" >&2
+            return 1
+            ;;
+    esac
+}
+
+latest_fish_version() {
+    download_to_stdout "${FISH_LATEST_RELEASE_API}" \
+        | sed -n 's/.*"tag_name": "\([^"]*\)".*/\1/p' \
+        | sed -n '1p'
+}
+
+install_fish_from_github_release() {
+    local sudo="$1"
+    local arch version archive_name download_url tmpdir archive_file fish_binary
+
+    ensure_fish_github_dependencies "${sudo}" || return 1
+
+    arch="$(fish_linux_arch)" || return 1
+    version="$(latest_fish_version)" || return 1
+
+    if [[ -z "${version}" ]]; then
+        echo "Error: could not determine latest fish release version from GitHub." >&2
+        return 1
+    fi
+
+    archive_name="fish-${version}-linux-${arch}.tar.xz"
+    download_url="https://github.com/fish-shell/fish-shell/releases/download/${version}/${archive_name}"
+    tmpdir="$(mktemp -d)" || return 1
+    archive_file="${tmpdir}/${archive_name}"
+    fish_binary="${tmpdir}/fish"
+
+    if ! download_to_file "${download_url}" "${archive_file}"; then
+        rm -rf "${tmpdir}"
+        return 1
+    fi
+
+    if ! tar -xJf "${archive_file}" -C "${tmpdir}"; then
+        echo "Error: could not extract downloaded fish archive." >&2
+        rm -rf "${tmpdir}"
+        return 1
+    fi
+
+    if [[ ! -x "${fish_binary}" ]]; then
+        echo "Error: downloaded fish archive did not contain an executable 'fish'." >&2
+        rm -rf "${tmpdir}"
+        return 1
+    fi
+
+    if ! $sudo install -d /usr/local/bin \
+        || ! $sudo install -m 755 "${fish_binary}" /usr/local/bin/fish; then
+        rm -rf "${tmpdir}"
+        return 1
+    fi
+
+    rm -rf "${tmpdir}"
 }
 
 remove_fish_prompt_block() {
