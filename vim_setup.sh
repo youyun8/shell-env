@@ -60,6 +60,10 @@ highlight DiffAdd    cterm=bold ctermfg=Black ctermbg=LightGreen gui=none
 highlight DiffDelete cterm=bold ctermfg=White ctermbg=DarkRed gui=none
 highlight DiffChange cterm=bold ctermfg=Black ctermbg=LightYellow gui=none
 highlight DiffText   cterm=bold ctermfg=Black ctermbg=Yellow gui=none
+
+set encoding=utf-8
+set fileencodings=utf-8,latin1
+set termencoding=utf-8
 EOF
         echo "${VIM_BLOCK_END}"
     } >> "${config_file}"
