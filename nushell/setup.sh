@@ -147,13 +147,13 @@ ensure_nushell_downloader() {
 
 nushell_linux_target() {
     case "$(uname -m)" in
-        x86_64|amd64)
+        x86_64 | amd64)
             echo "x86_64-unknown-linux-gnu"
             ;;
-        aarch64|arm64)
+        aarch64 | arm64)
             echo "aarch64-unknown-linux-gnu"
             ;;
-        armv7l|armv7)
+        armv7l | armv7)
             echo "armv7-unknown-linux-gnueabihf"
             ;;
         *)
@@ -164,9 +164,9 @@ nushell_linux_target() {
 }
 
 latest_nushell_version() {
-    download_to_stdout "${NUSHELL_LATEST_RELEASE_API}" \
-        | sed -n 's/.*"tag_name": "\([^"]*\)".*/\1/p' \
-        | sed -n '1p'
+    download_to_stdout "${NUSHELL_LATEST_RELEASE_API}" |
+        sed -n 's/.*"tag_name": "\([^"]*\)".*/\1/p' |
+        sed -n '1p'
 }
 
 install_nushell_from_github_release() {
@@ -251,6 +251,7 @@ if not ($shell_env_path | any {|entry| $entry == $shell_env_local_bin }) {
 
 $env.EDITOR = "vim"
 $env.VISUAL = "vim"
+$env.LESSCHARSET = "utf-8"
 
 if (which dircolors | is-not-empty) {
     let shell_env_dircolors = (dircolors -b | lines | first | parse "LS_COLORS='{value}';")
@@ -271,7 +272,7 @@ if not ($shell_env_ls_colors | str contains $shell_env_ls_colors_suffix) {
 }
 EOF
         echo "${NUSHELL_ENV_BLOCK_END}"
-    } >> "${config_file}"
+    } >>"${config_file}"
 }
 
 install_nushell_env() {
@@ -418,7 +419,7 @@ $env.PROMPT_INDICATOR = {||
 }
 EOF
         echo "${NUSHELL_PROMPT_BLOCK_END}"
-    } >> "${config_file}"
+    } >>"${config_file}"
 }
 
 install_nushell_prompt() {
@@ -452,7 +453,7 @@ run_mode() {
     local mode="$1"
 
     case "${mode}" in
-        -h|--help|help)
+        -h | --help | help)
             print_help
             ;;
         install)
@@ -473,7 +474,7 @@ run_mode() {
         uninstall-prompt)
             uninstall_nushell_prompt
             ;;
-        all|"")
+        all | "")
             install_nushell
             install_nushell_env
             install_nushell_prompt

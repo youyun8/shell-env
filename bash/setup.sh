@@ -64,12 +64,14 @@ case ":${PATH}:" in
         ;;
 esac
 
-export EDITOR="vim"
-export VISUAL="vim"
+        export EDITOR="vim"
+        export VISUAL="vim"
 
-if [ -x /usr/bin/dircolors ]; then
-    eval "$(dircolors -b)"
-fi
+        export LESSCHARSET="utf-8"
+
+        if [ -x /usr/bin/dircolors ]; then
+            eval "$(dircolors -b)"
+        fi
 
 case ":${LS_COLORS:-}:" in
     *":di=38;5;75:ln=38;5;222:"*) ;;
@@ -79,7 +81,7 @@ case ":${LS_COLORS:-}:" in
 esac
 EOF
         echo "${BASH_ENV_BLOCK_END}"
-    } >> "${config_file}"
+    } >>"${config_file}"
 }
 
 remove_prompt_block() {
@@ -159,7 +161,7 @@ write_prompt_block() {
 fi
 ${PROMPT_BLOCK_END}
 EOF
-    } >> "${config_file}"
+    } >>"${config_file}"
 }
 
 install_prompt() {
@@ -245,10 +247,10 @@ run_mode() {
     local mode="$1"
 
     case "${mode}" in
-        -h|--help|help)
+        -h | --help | help)
             print_help
             ;;
-        env|path)
+        env | path)
             install_bash_env
             ;;
         prompt)
@@ -257,13 +259,13 @@ run_mode() {
         vim)
             install_vim
             ;;
-        uninstall-env|uninstall-path)
+        uninstall-env | uninstall-path)
             uninstall_bash_env
             ;;
         uninstall-prompt)
             uninstall_bash_prompt
             ;;
-        all|"")
+        all | "")
             install_all
             ;;
         *)

@@ -22,7 +22,7 @@ remove_vim_block() {
     local output_file="$2"
 
     if [[ ! -f "${config_file}" ]]; then
-        : > "${output_file}"
+        : >"${output_file}"
         return 0
     fi
 
@@ -34,7 +34,7 @@ remove_vim_block() {
         $0 == start || $0 == legacy_start { skip = 1; next }
         $0 == end || $0 == legacy_end { skip = 0; next }
         !skip { print }
-    ' "${config_file}" > "${output_file}"
+    ' "${config_file}" >"${output_file}"
 }
 
 write_vim_block() {
@@ -66,7 +66,7 @@ set fileencodings=utf-8,latin1
 set termencoding=utf-8
 EOF
         echo "${VIM_BLOCK_END}"
-    } >> "${config_file}"
+    } >>"${config_file}"
 }
 
 acquire_vim_lock() {
@@ -75,7 +75,7 @@ acquire_vim_lock() {
 
     while ! mkdir "${lock_dir}" 2>/dev/null; do
         ((wait_seconds++))
-        if (( wait_seconds >= 30 )); then
+        if ((wait_seconds >= 30)); then
             echo "Error: timed out waiting for Vim config lock at ${lock_dir}" >&2
             return 1
         fi
@@ -111,7 +111,7 @@ install_vim_config() {
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
     case "${1:-}" in
-        -h|--help|help)
+        -h | --help | help)
             vim_print_help
             exit 0
             ;;

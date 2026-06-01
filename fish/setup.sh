@@ -146,8 +146,8 @@ download_to_file() {
 ensure_fish_github_dependencies() {
     local sudo="$1"
 
-    if (command -v curl >/dev/null 2>&1 || command -v wget >/dev/null 2>&1) \
-        && command -v xz >/dev/null 2>&1; then
+    if (command -v curl >/dev/null 2>&1 || command -v wget >/dev/null 2>&1) &&
+        command -v xz >/dev/null 2>&1; then
         return 0
     fi
 
@@ -163,10 +163,10 @@ ensure_fish_github_dependencies() {
 
 fish_linux_arch() {
     case "$(uname -m)" in
-        x86_64|amd64)
+        x86_64 | amd64)
             echo "x86_64"
             ;;
-        aarch64|arm64)
+        aarch64 | arm64)
             echo "aarch64"
             ;;
         *)
@@ -177,9 +177,9 @@ fish_linux_arch() {
 }
 
 latest_fish_version() {
-    download_to_stdout "${FISH_LATEST_RELEASE_API}" \
-        | sed -n 's/.*"tag_name": "\([^"]*\)".*/\1/p' \
-        | sed -n '1p'
+    download_to_stdout "${FISH_LATEST_RELEASE_API}" |
+        sed -n 's/.*"tag_name": "\([^"]*\)".*/\1/p' |
+        sed -n '1p'
 }
 
 install_fish_from_github_release() {
@@ -219,8 +219,8 @@ install_fish_from_github_release() {
         return 1
     fi
 
-    if ! $sudo install -d /usr/local/bin \
-        || ! $sudo install -m 755 "${fish_binary}" /usr/local/bin/fish; then
+    if ! $sudo install -d /usr/local/bin ||
+        ! $sudo install -m 755 "${fish_binary}" /usr/local/bin/fish; then
         rm -rf "${tmpdir}"
         return 1
     fi
@@ -274,6 +274,7 @@ end
 
 set -gx EDITOR vim
 set -gx VISUAL vim
+set -gx LESSCHARSET utf-8
 
 if type -q dircolors
     set -gx LS_COLORS (dircolors -c | string replace -r "^setenv LS_COLORS '(.*)'\$" '$1')
@@ -289,7 +290,7 @@ if not string match -q "*$shell_env_ls_colors_suffix*" "$LS_COLORS"
 end
 EOF
         echo "${FISH_ENV_BLOCK_END}"
-    } >> "${config_file}"
+    } >>"${config_file}"
 }
 
 install_fish_env() {
@@ -355,7 +356,7 @@ function fish_right_prompt --description 'shell-env: current time'
 end
 EOF
         echo "${FISH_PROMPT_BLOCK_END}"
-    } >> "${config_file}"
+    } >>"${config_file}"
 }
 
 install_fish_prompt() {
@@ -438,7 +439,7 @@ set -g __fish_git_prompt_color_upstream ffaf5f
 set -g __fish_git_prompt_color_flags ffaf5f
 EOF
         echo "${FISH_COLORS_BLOCK_END}"
-    } >> "${config_file}"
+    } >>"${config_file}"
 }
 
 install_fish_colors() {
@@ -472,13 +473,13 @@ run_mode() {
     local mode="$1"
 
     case "${mode}" in
-        -h|--help|help)
+        -h | --help | help)
             print_help
             ;;
         install)
             install_fish
             ;;
-        env|path)
+        env | path)
             install_fish_env
             ;;
         prompt)
@@ -490,7 +491,7 @@ run_mode() {
         vim)
             install_vim
             ;;
-        uninstall-env|uninstall-path)
+        uninstall-env | uninstall-path)
             uninstall_fish_env
             ;;
         uninstall-prompt)
@@ -499,7 +500,7 @@ run_mode() {
         uninstall-colors)
             uninstall_fish_colors
             ;;
-        all|"")
+        all | "")
             install_fish
             install_fish_env
             install_fish_prompt
