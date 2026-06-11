@@ -26,7 +26,7 @@ Env behavior:
 
 Prompt behavior:
   Adds a managed block to ~/.bashrc with a Git Bash-style prompt: a blank
-  line, green user@host, yellow full \$PWD, and cyan git status, with the
+  line, green user@host, magenta full \$PWD, and lime git status, with the
   command on a new line.
 EOF
 }
@@ -138,8 +138,8 @@ write_prompt_block() {
         esac
 
         local userhost='\\[\\e[32m\\]\\u@${host_token}'
-        local cwd='\\[\\e[33m\\]\\w'
-        local git='\\[\\e[36m\\]'
+        local cwd='\\[\\e[35m\\]\\w'
+        local git='\\[\\e[92m\\]'
         local reset='\\[\\e[0m\\]'
 
         __git_ps1 "\n\${title}\${chroot}\${userhost} \${cwd}\${git}" "\${reset}\n\\\\\\$ "
