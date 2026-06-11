@@ -41,8 +41,8 @@ Env behavior:
 Prompt behavior:
   Adds a managed block to ~/.config/nushell/config.nu with a Git
   Bash-style prompt: green user@host, cyan full \$PWD, light orange git
-  status with color hints (green branch, red dirty/untracked markers), a
-  right-aligned timestamp, and the command on a new line.
+  status with red dirty/untracked markers, a right-aligned timestamp,
+  and the command on a new line.
 EOF
 }
 
@@ -382,21 +382,20 @@ def shell_env_git_prompt [] {
     let staged = ($status_lines | any {|line| $line =~ '^[MADRCU]' })
     let untracked = ($status_lines | any {|line| $line =~ '^\?\?' })
     let orange = (ansi { fg: '#FFAF5F' })
-    let green = (ansi green)
     let red = (ansi red)
 
-    # Color hints matching Bash: green branch, red dirty/untracked markers,
-    # green staged marker, light orange parens.
+    # Color hints matching Bash: light orange branch and staged marker, red
+    # dirty/untracked markers, light orange parens.
     let flags = [
         (if $unstaged { $"($red)*" } else { "" })
-        (if $staged { $"($green)+" } else { "" })
+        (if $staged { $"($orange)+" } else { "" })
         (if $untracked { $"($red)%" } else { "" })
     ] | str join
 
     let decorated_ref = if ($flags | is-empty) {
-        $"($green)($ref)"
+        $"($orange)($ref)"
     } else {
-        $"($green)($ref)($orange) ($flags)"
+        $"($orange)($ref) ($flags)"
     }
 
     $"($orange) \(($decorated_ref)($orange)\)(ansi reset)"

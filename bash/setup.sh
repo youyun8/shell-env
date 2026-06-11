@@ -146,7 +146,15 @@ write_prompt_block() {
         local clock='\\[\\e[s\\]\\[\\e[999C\\]\\[\\e[8D\\]\\[\\e[38;5;139m\\]\\t\\[\\e[0m\\]\\[\\e[u\\]'
         local promptchar='\\[\\e[1;38;5;255m\\]\\\$\\[\\e[0m\\] '
 
-        __git_ps1 "\${title}\${chroot}\${userhost} \${cwd}\${gitcolor}" "\${reset}\${clock}\n\${promptchar}"
+        # Color hints color the branch and staged marker green; recolor that
+        # green to the light orange theme so only dirty/untracked stay red.
+        local hint_green=\$'\\001\\e[32m\\002'
+        local theme_orange=\$'\\001\\e[38;5;215m\\002'
+
+        # Third arg re-applies the git color before the closing paren so it
+        # matches the opening one; color hints reset each marker to default.
+        __git_ps1 "\${title}\${chroot}\${userhost} \${cwd}\${gitcolor}" "\${reset}\${clock}\n\${promptchar}" " (%s\${gitcolor})"
+        PS1=\${PS1//\$hint_green/\$theme_orange}
         return \$last_status
     }
 
