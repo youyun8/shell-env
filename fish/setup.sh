@@ -51,8 +51,8 @@ Env behavior:
 Prompt behavior:
   Adds a managed block to ~/.config/fish/config.fish that defines
   fish_prompt with a Git Bash-style layout: a blank line, green
-  user@host, magenta shell name, yellow full \$PWD, and cyan git
-  status, with the command on a new line.
+  user@host, yellow full \$PWD, and cyan git status, with the
+  command on a new line.
 
 Color behavior:
   Adds a managed block to ~/.config/fish/config.fish that aligns fish
@@ -318,8 +318,8 @@ write_fish_prompt_block() {
     {
         echo "${FISH_PROMPT_BLOCK_START}"
         cat <<'EOF'
-# Git Bash-style prompt: a blank line, green user@host, magenta shell name,
-# yellow full $PWD, cyan git status, then the command on a new line.
+# Git Bash-style prompt: a blank line, green user@host, yellow full $PWD,
+# cyan git status, then the command on a new line.
 function fish_prompt --description 'shell-env: Git Bash-style prompt'
     if not set -q __fish_prompt_hostname
         set -g __fish_prompt_hostname (prompt_hostname)
@@ -339,7 +339,7 @@ function fish_prompt --description 'shell-env: Git Bash-style prompt'
     set -g __fish_git_prompt_color cyan
 
     echo
-    echo -n -s (set_color green) "$prompt_user@$__fish_prompt_hostname " (set_color magenta) 'fish ' (set_color yellow) $PWD (set_color cyan) (fish_vcs_prompt) (set_color normal)
+    echo -n -s (set_color green) "$prompt_user@$__fish_prompt_hostname " (set_color yellow) $PWD (set_color cyan) (fish_vcs_prompt) (set_color normal)
     echo
     echo -n -s "$suffix "
 end

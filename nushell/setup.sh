@@ -40,8 +40,8 @@ Env behavior:
 
 Prompt behavior:
   Adds a managed block to ~/.config/nushell/config.nu with a Git
-  Bash-style prompt: a blank line, green user@host, magenta shell name,
-  yellow full \$PWD, and cyan git status, with the command on a new line.
+  Bash-style prompt: a blank line, green user@host, yellow full \$PWD,
+  and cyan git status, with the command on a new line.
 EOF
 }
 
@@ -407,10 +407,9 @@ $env.PROMPT_COMMAND = {||
     let user = (shell_env_current_user)
     let host = (do --ignore-errors { hostname } | str trim | split row '.' | first)
     let userhost_color = (ansi green)
-    let shell_color = (ansi magenta)
     let cwd_color = (ansi yellow)
     let reset = (ansi reset)
-    $"\n($userhost_color)($user)@($host) ($shell_color)nu ($cwd_color)($env.PWD)(shell_env_git_prompt)($reset)\n"
+    $"\n($userhost_color)($user)@($host) ($cwd_color)($env.PWD)(shell_env_git_prompt)($reset)\n"
 }
 
 $env.PROMPT_INDICATOR = {||
