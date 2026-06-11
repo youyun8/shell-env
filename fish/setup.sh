@@ -50,8 +50,9 @@ Env behavior:
 
 Prompt behavior:
   Adds a managed block to ~/.config/fish/config.fish that defines
-  fish_prompt to show user@host, the full \$PWD, git status, and
-  puts the input on a new line, with the current time on the right.
+  fish_prompt with a Git Bash-style layout: a blank line, green
+  user@host, magenta shell name, yellow full \$PWD, and cyan git
+  status, with the command on a new line.
 
 Color behavior:
   Adds a managed block to ~/.config/fish/config.fish that aligns fish
@@ -317,13 +318,9 @@ write_fish_prompt_block() {
     {
         echo "${FISH_PROMPT_BLOCK_START}"
         cat <<'EOF'
-# Mirror fish's default fish_prompt but show the full $PWD, put the
-# input on a new line, and show the current time on the right.
-# Keeps the default colors, user@host layout, and vcs/status segments untouched.
-function fish_prompt --description 'shell-env: default prompt + full path + newline'
-    set -l last_pipestatus $pipestatus
-    set -lx __fish_last_status $status
-
+# Git Bash-style prompt: a blank line, green user@host, magenta shell name,
+# yellow full $PWD, cyan git status, then the command on a new line.
+function fish_prompt --description 'shell-env: Git Bash-style prompt'
     if not set -q __fish_prompt_hostname
         set -g __fish_prompt_hostname (prompt_hostname)
     end
@@ -333,26 +330,22 @@ function fish_prompt --description 'shell-env: default prompt + full path + newl
         set prompt_user (id -un 2>/dev/null)
     end
 
-    set -l color_userhost green
-    set -l color_cwd blue
-    set -l color_git ffaf5f
-    set -l suffix '>'
+    set -l suffix '$'
     switch "$prompt_user"
         case root toor
             set suffix '#'
     end
 
-    set -g __fish_git_prompt_color $color_git
+    set -g __fish_git_prompt_color cyan
 
-    set -l prompt_status (__fish_print_pipestatus " [" "]" "|" (set_color $fish_color_status) (set_color $fish_color_status) $last_pipestatus)
-
-    echo -n -s (set_color --bold $color_userhost) "$prompt_user@$__fish_prompt_hostname" (set_color normal) ' ' (set_color --bold $color_cwd) $PWD (set_color $color_git) (fish_vcs_prompt) (set_color normal) $prompt_status
     echo
-    echo -n -s (set_color normal) "$suffix "
+    echo -n -s (set_color green) "$prompt_user@$__fish_prompt_hostname " (set_color magenta) 'fish ' (set_color yellow) $PWD (set_color cyan) (fish_vcs_prompt) (set_color normal)
+    echo
+    echo -n -s "$suffix "
 end
 
-function fish_right_prompt --description 'shell-env: current time'
-    echo -n -s (set_color e4e4e4) (date '+%H:%M:%S') (set_color normal)
+function fish_title --description 'shell-env: show the working directory'
+    echo $PWD
 end
 EOF
         echo "${FISH_PROMPT_BLOCK_END}"
@@ -426,17 +419,17 @@ set -g fish_pager_color_progress brwhite --background=brblack
 set -g fish_pager_color_secondary_background --background=brblack
 set -g fish_pager_color_selected_background --background=brblack
 
-set -g __fish_git_prompt_color ffaf5f
-set -g __fish_git_prompt_color_branch ffaf5f
-set -g __fish_git_prompt_color_branch_detached ffaf5f
-set -g __fish_git_prompt_color_dirtystate ffaf5f
-set -g __fish_git_prompt_color_stagedstate ffaf5f
-set -g __fish_git_prompt_color_invalidstate ffaf5f
-set -g __fish_git_prompt_color_untrackedfiles ffaf5f
-set -g __fish_git_prompt_color_cleanstate ffaf5f
-set -g __fish_git_prompt_color_stashstate ffaf5f
-set -g __fish_git_prompt_color_upstream ffaf5f
-set -g __fish_git_prompt_color_flags ffaf5f
+set -g __fish_git_prompt_color cyan
+set -g __fish_git_prompt_color_branch cyan
+set -g __fish_git_prompt_color_branch_detached cyan
+set -g __fish_git_prompt_color_dirtystate cyan
+set -g __fish_git_prompt_color_stagedstate cyan
+set -g __fish_git_prompt_color_invalidstate cyan
+set -g __fish_git_prompt_color_untrackedfiles cyan
+set -g __fish_git_prompt_color_cleanstate cyan
+set -g __fish_git_prompt_color_stashstate cyan
+set -g __fish_git_prompt_color_upstream cyan
+set -g __fish_git_prompt_color_flags cyan
 EOF
         echo "${FISH_COLORS_BLOCK_END}"
     } >>"${config_file}"

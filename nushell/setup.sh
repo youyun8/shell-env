@@ -39,9 +39,9 @@ Env behavior:
   VISUAL to vim, and sets LS_COLORS.
 
 Prompt behavior:
-  Adds a managed block to ~/.config/nushell/config.nu that shows
-  user@host, the full \$PWD, git status, and puts the input on a new line,
-  with the current time on the right.
+  Adds a managed block to ~/.config/nushell/config.nu with a Git
+  Bash-style prompt: a blank line, green user@host, magenta shell name,
+  yellow full \$PWD, and cyan git status, with the command on a new line.
 EOF
 }
 
@@ -392,7 +392,7 @@ def shell_env_git_prompt [] {
         $"($ref) ($flags)"
     }
 
-    $"(ansi { fg: '#FFAF5F' }) \(($decorated_ref)\)(ansi reset)"
+    $"(ansi cyan) \(($decorated_ref)\)(ansi reset)"
 }
 
 def shell_env_current_user [] {
@@ -406,16 +406,16 @@ def shell_env_current_user [] {
 $env.PROMPT_COMMAND = {||
     let user = (shell_env_current_user)
     let host = (do --ignore-errors { hostname } | str trim | split row '.' | first)
-    let userhost_color = (ansi green_bold)
-    let cwd_color = (ansi blue_bold)
+    let userhost_color = (ansi green)
+    let shell_color = (ansi magenta)
+    let cwd_color = (ansi yellow)
     let reset = (ansi reset)
-    $"($userhost_color)($user)@($host)($reset) ($cwd_color)($env.PWD)($reset)(shell_env_git_prompt)\n"
+    $"\n($userhost_color)($user)@($host) ($shell_color)nu ($cwd_color)($env.PWD)(shell_env_git_prompt)($reset)\n"
 }
 
-$env.PROMPT_COMMAND_RIGHT = {|| $"(ansi { fg: '#E4E4E4' })(date now | format date "%H:%M:%S")(ansi reset)" }
 $env.PROMPT_INDICATOR = {||
     let user = (shell_env_current_user)
-    if ($user == "root" or $user == "toor") { "# " } else { "> " }
+    if ($user == "root" or $user == "toor") { "# " } else { "$ " }
 }
 EOF
         echo "${NUSHELL_PROMPT_BLOCK_END}"
