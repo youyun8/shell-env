@@ -51,7 +51,7 @@ Env behavior:
 Prompt behavior:
   Adds a managed block to ~/.config/fish/config.fish that defines
   fish_prompt with a Git Bash-style layout: a blank line, green
-  user@host, magenta full \$PWD, and lime git status, with the
+  user@host, magenta full \$PWD, and light orange git status, with the
   command on a new line.
 
 Color behavior:
@@ -319,7 +319,7 @@ write_fish_prompt_block() {
         echo "${FISH_PROMPT_BLOCK_START}"
         cat <<'EOF'
 # Git Bash-style prompt: a blank line, green user@host, magenta full $PWD,
-# lime git status, then the command on a new line.
+# light orange git status, then the command on a new line.
 function fish_prompt --description 'shell-env: Git Bash-style prompt'
     if not set -q __fish_prompt_hostname
         set -g __fish_prompt_hostname (prompt_hostname)
@@ -336,10 +336,10 @@ function fish_prompt --description 'shell-env: Git Bash-style prompt'
             set suffix '#'
     end
 
-    set -g __fish_git_prompt_color brgreen
+    set -g __fish_git_prompt_color ffaf5f
 
     echo
-    echo -n -s (set_color green) "$prompt_user@$__fish_prompt_hostname " (set_color magenta) $PWD (set_color brgreen) (fish_vcs_prompt) (set_color normal)
+    echo -n -s (set_color green) "$prompt_user@$__fish_prompt_hostname " (set_color magenta) $PWD (set_color ffaf5f) (fish_vcs_prompt) (set_color normal)
     echo
     echo -n -s "$suffix "
 end
@@ -419,17 +419,17 @@ set -g fish_pager_color_progress brwhite --background=brblack
 set -g fish_pager_color_secondary_background --background=brblack
 set -g fish_pager_color_selected_background --background=brblack
 
-set -g __fish_git_prompt_color brgreen
-set -g __fish_git_prompt_color_branch brgreen
-set -g __fish_git_prompt_color_branch_detached brgreen
-set -g __fish_git_prompt_color_dirtystate brgreen
-set -g __fish_git_prompt_color_stagedstate brgreen
-set -g __fish_git_prompt_color_invalidstate brgreen
-set -g __fish_git_prompt_color_untrackedfiles brgreen
-set -g __fish_git_prompt_color_cleanstate brgreen
-set -g __fish_git_prompt_color_stashstate brgreen
-set -g __fish_git_prompt_color_upstream brgreen
-set -g __fish_git_prompt_color_flags brgreen
+set -g __fish_git_prompt_color ffaf5f
+set -g __fish_git_prompt_color_branch ffaf5f
+set -g __fish_git_prompt_color_branch_detached ffaf5f
+set -g __fish_git_prompt_color_dirtystate ffaf5f
+set -g __fish_git_prompt_color_stagedstate ffaf5f
+set -g __fish_git_prompt_color_invalidstate ffaf5f
+set -g __fish_git_prompt_color_untrackedfiles ffaf5f
+set -g __fish_git_prompt_color_cleanstate ffaf5f
+set -g __fish_git_prompt_color_stashstate ffaf5f
+set -g __fish_git_prompt_color_upstream ffaf5f
+set -g __fish_git_prompt_color_flags ffaf5f
 EOF
         echo "${FISH_COLORS_BLOCK_END}"
     } >>"${config_file}"

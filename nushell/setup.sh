@@ -41,7 +41,7 @@ Env behavior:
 Prompt behavior:
   Adds a managed block to ~/.config/nushell/config.nu with a Git
   Bash-style prompt: a blank line, green user@host, magenta full \$PWD,
-  and lime git status, with the command on a new line.
+  and light orange git status, with the command on a new line.
 EOF
 }
 
@@ -392,7 +392,7 @@ def shell_env_git_prompt [] {
         $"($ref) ($flags)"
     }
 
-    $"(ansi light_green) \(($decorated_ref)\)(ansi reset)"
+    $"(ansi { fg: '#FFAF5F' }) \(($decorated_ref)\)(ansi reset)"
 }
 
 def shell_env_current_user [] {
