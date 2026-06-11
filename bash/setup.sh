@@ -25,9 +25,9 @@ Env behavior:
   LS_COLORS.
 
 Prompt behavior:
-  Adds a managed block to ~/.bashrc that shows user@host, the full \$PWD,
-  git status, and puts the input on a new line, with the current time on
-  the right.
+  Adds a managed block to ~/.bashrc with a Git Bash-style prompt: a blank
+  line, green user@host, magenta shell name, yellow full \$PWD, and cyan
+  git status, with the command on a new line.
 EOF
 }
 
@@ -133,22 +133,17 @@ write_prompt_block() {
 
         case "\$TERM" in
             xterm*|rxvt*)
-                title='\\[\\e]0;\\u@${host_token}: \\w\\a\\]'
+                title='\\[\\e]0;\\w\\a\\]'
                 ;;
         esac
 
-        local userhost='\\[\\e[01;32m\\]\\u@${host_token}\\[\\e[0m\\]'
-        local cwd='\\[\\e[01;34m\\]\\w\\[\\e[0m\\]'
-        local git='\\[\\e[38;5;215m\\]'
-        local time_color='\\[\\e[38;5;254m\\]'
+        local userhost='\\[\\e[32m\\]\\u@${host_token}'
+        local shellname='\\[\\e[35m\\]bash'
+        local cwd='\\[\\e[33m\\]\\w'
+        local git='\\[\\e[36m\\]'
         local reset='\\[\\e[0m\\]'
-        local right_time
-        local right_prompt
 
-        right_time="\$(date +%H:%M:%S)"
-        right_prompt="\\[\\e[s\\]\\[\\e[999C\\]\\[\\e[8D\\]\${time_color}\${right_time}\${reset}\\[\\e[u\\]"
-
-        __git_ps1 "\${title}\${chroot}\${userhost} \${cwd}\${git}" "\${reset}\${right_prompt}\n\${reset}\\\\\\$ "
+        __git_ps1 "\n\${title}\${chroot}\${userhost} \${shellname} \${cwd}\${git}" "\${reset}\n\\\\\\$ "
         return \$last_status
     }
 
