@@ -25,9 +25,10 @@ Env behavior:
   LS_COLORS.
 
 Prompt behavior:
-  Adds a managed block to ~/.bashrc with a Git Bash-style prompt: a blank
-  line, green user@host, magenta full \$PWD, and light orange git status, with the
-  command on a new line.
+  Adds a managed block to ~/.bashrc with a Git Bash-style prompt: green
+  user@host, cyan full \$PWD, and light orange git status with color hints
+  (so __git_ps1 turns the dirty/untracked markers red when the tree is
+  dirty), a right-aligned timestamp, and the command on a new line.
 EOF
 }
 
@@ -121,6 +122,7 @@ write_prompt_block() {
         cat <<EOF
     export GIT_PS1_SHOWDIRTYSTATE=1
     export GIT_PS1_SHOWUNTRACKEDFILES=1
+    export GIT_PS1_SHOWCOLORHINTS=1
 
     shell_env_prompt_command() {
         local last_status=\$?
@@ -137,12 +139,14 @@ write_prompt_block() {
                 ;;
         esac
 
-        local userhost='\\[\\e[32m\\]\\u@${host_token}'
-        local cwd='\\[\\e[35m\\]\\w'
-        local git='\\[\\e[38;5;215m\\]'
+        local userhost='\\[\\e[38;5;78m\\]\\u@${host_token}\\[\\e[0m\\]'
+        local cwd='\\[\\e[38;5;81m\\]\\w\\[\\e[0m\\]'
+        local gitcolor='\\[\\e[38;5;215m\\]'
         local reset='\\[\\e[0m\\]'
+        local clock='\\[\\e[s\\]\\[\\e[999C\\]\\[\\e[8D\\]\\[\\e[38;5;139m\\]\\t\\[\\e[0m\\]\\[\\e[u\\]'
+        local promptchar='\\[\\e[1;38;5;255m\\]\\\$\\[\\e[0m\\] '
 
-        __git_ps1 "\n\${title}\${chroot}\${userhost} \${cwd}\${git}" "\${reset}\n\\\\\\$ "
+        __git_ps1 "\${title}\${chroot}\${userhost} \${cwd}\${gitcolor}" "\${reset}\${clock}\n\${promptchar}"
         return \$last_status
     }
 

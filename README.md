@@ -40,7 +40,7 @@ For Vim settings, reopen Vim or run `:source ~/.vimrc` inside Vim.
 
 ## Bash
 
-Configures Bash with a managed environment block and a Git Bash-style two-line prompt (a blank line, green `user@host`, magenta full path, light orange Git status, then the command on a new line), plus terminal-default command input and Vim settings.
+Configures Bash with a managed environment block and a Git Bash-style two-line prompt (green `user@host`, cyan full path, light orange Git status with `__git_ps1` color hints so the dirty/untracked markers turn red when the tree is dirty, a right-aligned timestamp, then the command on a new line), plus terminal-default command input and Vim settings.
 
 ```bash
 bash bash/setup.sh                     # install bash env + prompt + vim (default)
@@ -59,7 +59,7 @@ Bash config is written to `~/.bashrc`. Prompt setup copies
 
 ## Fish
 
-Installs [fish](https://fishshell.com/) and can write managed environment, prompt, color, and Vim configuration blocks. The prompt mirrors the Git Bash style: a blank line, green `user@host`, magenta full path, and light orange Git status, with the command on a new line; editable command syntax uses the terminal default to match Bash.
+Installs [fish](https://fishshell.com/) and can write managed environment, prompt, color, and Vim configuration blocks. The prompt mirrors the Git Bash style: green `user@host`, cyan full path, light orange Git status with color hints (green branch, red dirty/untracked markers), a right-aligned timestamp, then the command on a new line; editable command syntax uses the terminal default to match Bash.
 On apt-based systems where `fish` cannot be installed from the configured repositories, the installer downloads the latest official Linux release from GitHub and installs `fish` to `/usr/local/bin`.
 
 ```bash
@@ -81,7 +81,7 @@ Fish config is written to `~/.config/fish/config.fish`.
 
 ## Nushell
 
-Installs [Nushell](https://www.nushell.sh/) and can write managed environment, prompt, and Vim configuration. The prompt mirrors the Git Bash style: a blank line, green `user@host`, magenta full path, and light orange Git status, with the command on a new line; editable command syntax uses the terminal default to match Bash.
+Installs [Nushell](https://www.nushell.sh/) and can write managed environment, prompt, and Vim configuration. The prompt mirrors the Git Bash style: green `user@host`, cyan full path, light orange Git status with color hints (green branch, red dirty/untracked markers), a right-aligned timestamp, then the command on a new line; editable command syntax uses the terminal default to match Bash.
 On apt-based systems where `nushell` is not available from the configured repositories, the installer downloads the latest official Linux release from GitHub and installs `nu` and its bundled plugins to `/usr/local/bin`.
 
 ```bash

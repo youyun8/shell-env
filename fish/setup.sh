@@ -50,9 +50,10 @@ Env behavior:
 
 Prompt behavior:
   Adds a managed block to ~/.config/fish/config.fish that defines
-  fish_prompt with a Git Bash-style layout: a blank line, green
-  user@host, magenta full \$PWD, and light orange git status, with the
-  command on a new line.
+  fish_prompt with a Git Bash-style layout: green user@host, cyan full
+  \$PWD, light orange git status with color hints (green branch, red
+  dirty/untracked markers), a right-aligned timestamp, and the command
+  on a new line.
 
 Color behavior:
   Adds a managed block to ~/.config/fish/config.fish that aligns fish
@@ -318,8 +319,21 @@ write_fish_prompt_block() {
     {
         echo "${FISH_PROMPT_BLOCK_START}"
         cat <<'EOF'
-# Git Bash-style prompt: a blank line, green user@host, magenta full $PWD,
-# light orange git status, then the command on a new line.
+# Git Bash-style prompt: green user@host, cyan full $PWD, light orange git
+# status with color hints (green branch, red dirty/untracked markers), a
+# right-aligned timestamp, then the command on a new line.
+set -g __fish_git_prompt_showdirtystate 1
+set -g __fish_git_prompt_showuntrackedfiles 1
+set -g __fish_git_prompt_color ffaf5f
+set -g __fish_git_prompt_color_prefix ffaf5f
+set -g __fish_git_prompt_color_suffix ffaf5f
+set -g __fish_git_prompt_color_branch green
+set -g __fish_git_prompt_color_branch_detached red
+set -g __fish_git_prompt_color_dirtystate red
+set -g __fish_git_prompt_color_stagedstate green
+set -g __fish_git_prompt_color_untrackedfiles red
+set -g __fish_git_prompt_color_cleanstate green
+
 function fish_prompt --description 'shell-env: Git Bash-style prompt'
     if not set -q __fish_prompt_hostname
         set -g __fish_prompt_hostname (prompt_hostname)
@@ -336,12 +350,11 @@ function fish_prompt --description 'shell-env: Git Bash-style prompt'
             set suffix '#'
     end
 
-    set -g __fish_git_prompt_color ffaf5f
+    set -l clock (printf '\e[s\e[999C\e[8D\e[38;5;139m%s\e[0m\e[u' (date +%T))
 
+    echo -n -s (set_color 5fd787) "$prompt_user@$__fish_prompt_hostname " (set_color 5fd7ff) $PWD (set_color ffaf5f) (fish_vcs_prompt) (set_color normal) $clock
     echo
-    echo -n -s (set_color green) "$prompt_user@$__fish_prompt_hostname " (set_color magenta) $PWD (set_color ffaf5f) (fish_vcs_prompt) (set_color normal)
-    echo
-    echo -n -s "$suffix "
+    echo -n -s (set_color -o eeeeee) "$suffix " (set_color normal)
 end
 
 function fish_title --description 'shell-env: show the working directory'
@@ -420,14 +433,16 @@ set -g fish_pager_color_secondary_background --background=brblack
 set -g fish_pager_color_selected_background --background=brblack
 
 set -g __fish_git_prompt_color ffaf5f
-set -g __fish_git_prompt_color_branch ffaf5f
-set -g __fish_git_prompt_color_branch_detached ffaf5f
-set -g __fish_git_prompt_color_dirtystate ffaf5f
-set -g __fish_git_prompt_color_stagedstate ffaf5f
-set -g __fish_git_prompt_color_invalidstate ffaf5f
-set -g __fish_git_prompt_color_untrackedfiles ffaf5f
-set -g __fish_git_prompt_color_cleanstate ffaf5f
-set -g __fish_git_prompt_color_stashstate ffaf5f
+set -g __fish_git_prompt_color_prefix ffaf5f
+set -g __fish_git_prompt_color_suffix ffaf5f
+set -g __fish_git_prompt_color_branch green
+set -g __fish_git_prompt_color_branch_detached red
+set -g __fish_git_prompt_color_dirtystate red
+set -g __fish_git_prompt_color_stagedstate green
+set -g __fish_git_prompt_color_invalidstate red
+set -g __fish_git_prompt_color_untrackedfiles red
+set -g __fish_git_prompt_color_cleanstate green
+set -g __fish_git_prompt_color_stashstate brblue
 set -g __fish_git_prompt_color_upstream ffaf5f
 set -g __fish_git_prompt_color_flags ffaf5f
 EOF

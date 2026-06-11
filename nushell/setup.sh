@@ -40,8 +40,9 @@ Env behavior:
 
 Prompt behavior:
   Adds a managed block to ~/.config/nushell/config.nu with a Git
-  Bash-style prompt: a blank line, green user@host, magenta full \$PWD,
-  and light orange git status, with the command on a new line.
+  Bash-style prompt: green user@host, cyan full \$PWD, light orange git
+  status with color hints (green branch, red dirty/untracked markers), a
+  right-aligned timestamp, and the command on a new line.
 EOF
 }
 
@@ -380,19 +381,25 @@ def shell_env_git_prompt [] {
     let unstaged = ($status_lines | any {|line| $line =~ '^.[MDU]' })
     let staged = ($status_lines | any {|line| $line =~ '^[MADRCU]' })
     let untracked = ($status_lines | any {|line| $line =~ '^\?\?' })
+    let orange = (ansi { fg: '#FFAF5F' })
+    let green = (ansi green)
+    let red = (ansi red)
+
+    # Color hints matching Bash: green branch, red dirty/untracked markers,
+    # green staged marker, light orange parens.
     let flags = [
-        (if $unstaged { "*" } else { "" })
-        (if $staged { "+" } else { "" })
-        (if $untracked { "%" } else { "" })
+        (if $unstaged { $"($red)*" } else { "" })
+        (if $staged { $"($green)+" } else { "" })
+        (if $untracked { $"($red)%" } else { "" })
     ] | str join
 
     let decorated_ref = if ($flags | is-empty) {
-        $ref
+        $"($green)($ref)"
     } else {
-        $"($ref) ($flags)"
+        $"($green)($ref)($orange) ($flags)"
     }
 
-    $"(ansi { fg: '#FFAF5F' }) \(($decorated_ref)\)(ansi reset)"
+    $"($orange) \(($decorated_ref)($orange)\)(ansi reset)"
 }
 
 def shell_env_current_user [] {
@@ -406,16 +413,19 @@ def shell_env_current_user [] {
 $env.PROMPT_COMMAND = {||
     let user = (shell_env_current_user)
     let host = (do --ignore-errors { hostname } | str trim | split row '.' | first)
-    let userhost_color = (ansi green)
-    let cwd_color = (ansi magenta)
+    let userhost_color = (ansi { fg: '#5FD787' })
+    let cwd_color = (ansi { fg: '#5FD7FF' })
     let reset = (ansi reset)
-    $"\n($userhost_color)($user)@($host) ($cwd_color)($env.PWD)(shell_env_git_prompt)($reset)\n"
+    # Save cursor, jump to the right edge, print the time, then restore so the
+    # command still starts on a fresh line below.
+    let clock = $"(ansi -e 's')(ansi -e '999C')(ansi -e '8D')(ansi { fg: '#AF87AF' })(date now | format date '%H:%M:%S')(ansi reset)(ansi -e 'u')"
+    $"($userhost_color)($user)@($host) ($cwd_color)($env.PWD)(shell_env_git_prompt)($clock)($reset)\n"
 }
 
 $env.PROMPT_INDICATOR = {||
     let user = (shell_env_current_user)
     let mark = if ($user == "root" or $user == "toor") { "#" } else { "$" }
-    $"(ansi white)($mark) (ansi reset)"
+    $"(ansi { fg: '#EEEEEE' attr: b })($mark) (ansi reset)"
 }
 EOF
         echo "${NUSHELL_PROMPT_BLOCK_END}"
