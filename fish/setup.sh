@@ -51,9 +51,8 @@ Env behavior:
 Prompt behavior:
   Adds a managed block to ~/.config/fish/config.fish that defines
   fish_prompt with a Git Bash-style layout: green user@host, cyan full
-  \$PWD, light orange git status with color hints (green branch, red
-  dirty/untracked markers), a right-aligned timestamp, and the command
-  on a new line.
+  \$PWD, light orange git status with red dirty/untracked markers, a
+  right-aligned timestamp, and the command on a new line.
 
 Color behavior:
   Adds a managed block to ~/.config/fish/config.fish that aligns fish
@@ -320,19 +319,19 @@ write_fish_prompt_block() {
         echo "${FISH_PROMPT_BLOCK_START}"
         cat <<'EOF'
 # Git Bash-style prompt: green user@host, cyan full $PWD, light orange git
-# status with color hints (green branch, red dirty/untracked markers), a
-# right-aligned timestamp, then the command on a new line.
+# status with red dirty/untracked markers, a right-aligned timestamp, then
+# the command on a new line.
 set -g __fish_git_prompt_showdirtystate 1
 set -g __fish_git_prompt_showuntrackedfiles 1
 set -g __fish_git_prompt_color ffaf5f
 set -g __fish_git_prompt_color_prefix ffaf5f
 set -g __fish_git_prompt_color_suffix ffaf5f
-set -g __fish_git_prompt_color_branch green
+set -g __fish_git_prompt_color_branch ffaf5f
 set -g __fish_git_prompt_color_branch_detached red
 set -g __fish_git_prompt_color_dirtystate red
-set -g __fish_git_prompt_color_stagedstate green
+set -g __fish_git_prompt_color_stagedstate ffaf5f
 set -g __fish_git_prompt_color_untrackedfiles red
-set -g __fish_git_prompt_color_cleanstate green
+set -g __fish_git_prompt_color_cleanstate ffaf5f
 
 function fish_prompt --description 'shell-env: Git Bash-style prompt'
     if not set -q __fish_prompt_hostname
@@ -435,13 +434,13 @@ set -g fish_pager_color_selected_background --background=brblack
 set -g __fish_git_prompt_color ffaf5f
 set -g __fish_git_prompt_color_prefix ffaf5f
 set -g __fish_git_prompt_color_suffix ffaf5f
-set -g __fish_git_prompt_color_branch green
+set -g __fish_git_prompt_color_branch ffaf5f
 set -g __fish_git_prompt_color_branch_detached red
 set -g __fish_git_prompt_color_dirtystate red
-set -g __fish_git_prompt_color_stagedstate green
+set -g __fish_git_prompt_color_stagedstate ffaf5f
 set -g __fish_git_prompt_color_invalidstate red
 set -g __fish_git_prompt_color_untrackedfiles red
-set -g __fish_git_prompt_color_cleanstate green
+set -g __fish_git_prompt_color_cleanstate ffaf5f
 set -g __fish_git_prompt_color_stashstate brblue
 set -g __fish_git_prompt_color_upstream ffaf5f
 set -g __fish_git_prompt_color_flags ffaf5f
