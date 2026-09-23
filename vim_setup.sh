@@ -13,7 +13,7 @@ Usage:
 
 Description:
   Writes a managed Vim settings block to ~/.vimrc. Shell-independent;
-  used by bash/setup.sh, fish/setup.sh, and nushell/setup.sh.
+  used by bash/setup.sh.
 EOF
 }
 

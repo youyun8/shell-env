@@ -26,7 +26,7 @@ Env behavior:
 
 Prompt behavior:
   Adds a managed block to ~/.bashrc with a Git Bash-style prompt: green
-  user@host, cyan full \$PWD, and light orange git status with color hints
+  user@host, teal full \$PWD, and amber git status with color hints
   (so __git_ps1 turns the dirty/untracked markers red when the tree is
   dirty), a right-aligned timestamp, and the command on a new line.
 EOF
@@ -139,22 +139,22 @@ write_prompt_block() {
                 ;;
         esac
 
-        local userhost='\\[\\e[38;5;78m\\]\\u@${host_token}\\[\\e[0m\\]'
-        local cwd='\\[\\e[38;5;81m\\]\\w\\[\\e[0m\\]'
-        local gitcolor='\\[\\e[38;5;215m\\]'
+        local userhost='\\[\\e[38;2;118;185;0m\\]\\u@${host_token}\\[\\e[0m\\]'
+        local cwd='\\[\\e[38;2;28;199;168m\\]\\w\\[\\e[0m\\]'
+        local gitcolor='\\[\\e[38;2;255;179;0m\\]'
         local reset='\\[\\e[0m\\]'
         local clock='\\[\\e[s\\]\\[\\e[999C\\]\\[\\e[8D\\]\\[\\e[38;5;139m\\]\\t\\[\\e[0m\\]\\[\\e[u\\]'
         local promptchar='\\[\\e[1;38;5;255m\\]\\\$\\[\\e[0m\\] '
 
         # Color hints color the branch and staged marker green; recolor that
-        # green to the light orange theme so only dirty/untracked stay red.
+        # green to the amber theme so only dirty/untracked stay red.
         local hint_green=\$'\\001\\e[32m\\002'
-        local theme_orange=\$'\\001\\e[38;5;215m\\002'
+        local theme_amber=\$'\\001\\e[38;2;255;179;0m\\002'
 
         # Third arg re-applies the git color before the closing paren so it
         # matches the opening one; color hints reset each marker to default.
         __git_ps1 "\${title}\${chroot}\${userhost} \${cwd}\${gitcolor}" "\${reset}\${clock}\n\${promptchar}" " (%s\${gitcolor})"
-        PS1=\${PS1//\$hint_green/\$theme_orange}
+        PS1=\${PS1//\$hint_green/\$theme_amber}
         return \$last_status
     }
 
