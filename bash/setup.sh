@@ -139,7 +139,7 @@ write_prompt_block() {
                 ;;
         esac
 
-        local userhost='\\[\\e[38;2;118;185;0m\\]\\u@${host_token}\\[\\e[0m\\]'
+        local userhost='\\[\\e[38;2;163;217;76m\\]\\u@${host_token}\\[\\e[0m\\]'
         local cwd='\\[\\e[38;2;28;199;168m\\]\\w\\[\\e[0m\\]'
         local gitcolor='\\[\\e[38;2;255;179;0m\\]'
         local reset='\\[\\e[0m\\]'
