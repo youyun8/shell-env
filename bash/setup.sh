@@ -139,17 +139,17 @@ write_prompt_block() {
                 ;;
         esac
 
-        local userhost='\\[\\e[38;2;163;217;76m\\]\\u@${host_token}\\[\\e[0m\\]'
-        local cwd='\\[\\e[38;2;28;199;168m\\]\\w\\[\\e[0m\\]'
-        local gitcolor='\\[\\e[38;2;255;179;0m\\]'
+        local userhost='\\[\\e[38;2;175;255;65m\\]\\u@${host_token}\\[\\e[0m\\]'
+        local cwd='\\[\\e[38;2;85;205;255m\\]\\w\\[\\e[0m\\]'
+        local gitcolor='\\[\\e[38;2;255;185;40m\\]'
         local reset='\\[\\e[0m\\]'
-        local clock='\\[\\e[s\\]\\[\\e[999C\\]\\[\\e[8D\\]\\[\\e[38;5;139m\\]\\t\\[\\e[0m\\]\\[\\e[u\\]'
+        local clock='\\[\\e[s\\]\\[\\e[999C\\]\\[\\e[8D\\]\\[\\e[38;5;245m\\]\\t\\[\\e[0m\\]\\[\\e[u\\]'
         local promptchar='\\[\\e[1;38;5;255m\\]\\\$\\[\\e[0m\\] '
 
         # Color hints color the branch and staged marker green; recolor that
         # green to the amber theme so only dirty/untracked stay red.
         local hint_green=\$'\\001\\e[32m\\002'
-        local theme_amber=\$'\\001\\e[38;2;255;179;0m\\002'
+        local theme_amber=\$'\\001\\e[38;2;255;185;40m\\002'
 
         # Third arg re-applies the git color before the closing paren so it
         # matches the opening one; color hints reset each marker to default.
